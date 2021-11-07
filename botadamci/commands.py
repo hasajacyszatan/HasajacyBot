@@ -4,8 +4,8 @@ from telegrask.ext import Moderation
 from . import bot
 from .config import FEDERATION
 from .functions import do_action
-
-
+from .config import HAREGLY
+import random
 @bot.command("mute", help="zmutuj użytkownika")
 def mute(update: Update, context: CallbackContext):
     mod = Moderation(update, context)
@@ -28,3 +28,8 @@ def ban(update: Update, context: CallbackContext):
 def unban(update: Update, context: CallbackContext):
     mod = Moderation(update, context)
     do_action(mod, mod.unban, in_federation=mod.chat_id in FEDERATION)
+
+@bot.command("haregly", help="pokazuje losową wiadomość hareglyego")
+def haregly(update: Update, context: CallbackContext):
+    mod = Moderation(update, context)
+    update.message.reply_text(HAREGLY[random.randrange(0, len(HAREGLY))])
