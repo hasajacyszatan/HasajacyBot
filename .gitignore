@@ -1,4 +1,4 @@
-data/
+data/federation.json
 media/
 .venv/
 .env
