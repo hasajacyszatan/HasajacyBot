@@ -6,6 +6,7 @@ from .config import FEDERATION
 from .functions import do_action
 from .config import HAREGLY
 import random
+from requests import get
 @bot.command("mute", help="zmutuj użytkownika")
 def mute(update: Update, context: CallbackContext):
     mod = Moderation(update, context)
@@ -33,3 +34,6 @@ def unban(update: Update, context: CallbackContext):
 def haregly(update: Update, context: CallbackContext):
     mod = Moderation(update, context)
     update.message.reply_text(HAREGLY[random.randrange(0, len(HAREGLY))])
+@bot.command("covid_daily", help="podaje wczorajszą informacje o liczbie chorych na covid")
+def covid(update: Update, context: CallbackContext):
+    update.message.reply_text(get("https://koronawirus-api.herokuapp.com/api/covid19/daily").json()['today']['newInfections'])
