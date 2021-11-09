@@ -1,7 +1,7 @@
 from os import getenv, getcwd
 import json
 
-TOKEN = "TOKEN"
+TOKEN = "2141651634:AAEHbB0GNqPXSezz4G5aMLcUZIIglG3zIO4"
 
 with open(f"{getcwd()}/data/federation.json", "r") as f:
     FEDERATION = json.loads(f.read())
