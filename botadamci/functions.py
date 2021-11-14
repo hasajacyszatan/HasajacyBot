@@ -19,7 +19,14 @@ def do_action(mod: Moderation, method: Callable, in_federation: bool = False):
 
     try:
         if mod.is_user_admin(update.message.from_user.id):
-            update.message.reply_text("❌ Nie masz wystarczających uprawnień.")
+            if in_federation:
+                for chat_id in FEDERATION:
+                    mod.chat_id = chat_id
+                    method(user.id)
+                update.message.reply_text(msg)
+            else:
+                method(user.id)
+                update.message.reply_text(msg)
         else:
             update.message.reply_text("❌ Nie masz wystarczających uprawnień.")
     except PermissionError:
