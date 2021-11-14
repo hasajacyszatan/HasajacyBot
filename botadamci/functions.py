@@ -23,10 +23,10 @@ def do_action(mod: Moderation, method: Callable, in_federation: bool = False):
                 for chat_id in FEDERATION:
                     mod.chat_id = chat_id
                     method(user.id)
-                update.message.reply_text(msg)
+                update.message.reply_text(msg, parse_mode="MarkdownV2")
             else:
                 method(user.id)
-                update.message.reply_text(msg)
+                update.message.reply_text(msg, parse_mode="MarkdownV2")
         else:
             update.message.reply_text("❌ Nie masz wystarczających uprawnień.")
     except PermissionError:
