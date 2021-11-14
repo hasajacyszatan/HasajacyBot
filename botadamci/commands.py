@@ -63,7 +63,13 @@ def unban(update: Update, context: CallbackContext):
 
 @bot.command("haregly", help="pokazuje losową wiadomość hareglyego")
 def haregly(update: Update, context: CallbackContext):
-    update.message.reply_text(HAREGLY[random.randrange(0, len(HAREGLY))])
+    chat_id = update.message.chat.id
+    try:
+        reply_id = update.message["reply_to_message"].message_id
+    except:
+        reply_id = None
+    context.bot.delete_message(chat_id, update.message.message_id)
+    context.bot.send_message(chat_id, HAREGLY[random.randrange(0, len(HAREGLY))], reply_to_message_id=reply_id)
 
 @bot.command("haregly_add", help="dodaje wiadomość hareglyego do spywaru")
 def haregly(update: Update, context: CallbackContext):
