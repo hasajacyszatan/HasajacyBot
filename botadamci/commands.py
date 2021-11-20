@@ -34,23 +34,23 @@ def warn(update: Update, context: CallbackContext):
         mod = Moderation(update, context)
         user_id = update.message["reply_to_message"].from_user.id
         user = update.message["reply_to_message"].from_user.username
-        msg = update.message["text"][6:]
-        if msg == "clear" or msg == "clean":
+        msg = update.message["text"].split()
+        if msg[1] == "clear" or msg[1] == "clean":
             BLACKLIST[user_id] = 0
             update.message.reply_text(f"Użytkownik {user} ma {BLACKLIST[user_id]}/5 ostrzeżeń")
             with open(f"{getcwd()}/data/blacklist.json", "w") as new_blacklist:
                 json.dump(BLACKLIST,new_blacklist)
         else:
-            if not msg.isdigit() or int(msg) < 1:
+            if not msg[1].isdigit() or int(msg[1]) < 1:
                 msg = 0
             if user_id in BLACKLIST:
-                BLACKLIST[user_id] += int(msg)
+                BLACKLIST[user_id] += int(msg[1])
             else:
-                BLACKLIST[user_id] = int(msg)
+                BLACKLIST[user_id] = int(msg[1])
             print(BLACKLIST)
             with open(f"{getcwd()}/data/blacklist.json", "w") as new_blacklist:
                 json.dump(BLACKLIST,new_blacklist)
-            update.message.reply_text(f"Użytkownik {user} otrzymał {BLACKLIST[user_id]}/5 ostrzeżeń")
+            update.message.reply_text(f"Użytkownik {user} otrzymał {BLACKLIST[user_id]}/5 ostrzeżeń\nPowód: {''.join(str(x) for x in msg[2:])}")
             if BLACKLIST[user_id] > 5:
                 mod = Moderation(update, context)
                 do_action(mod, mod.ban, in_federation=mod.chat_id in FEDERATION)
